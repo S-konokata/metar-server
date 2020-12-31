@@ -7,6 +7,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" 
     rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" 
     crossorigin="anonymous">
+    <!-- flatpickr: lightweight, powerful javascript datetimepicker with no dependencies  -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   </head>
   <body>
     <h1>過去METAR検索</h1>
@@ -15,13 +17,9 @@
       表示したいMETARの空港コード＆日付を入れてください。<br>
       日本時間の一日分のMETARが表示されます。
     </p>
-    <form action="{% url 'form' %}" method="post">
+    <form action="{% url 'index' %}" method="post">
       {% csrf_token %}
-      <label for="icao">空港コード（RJ__）</label>
-      <input type="text" id="icao" name="icao" required
-            minlength="4" maxlength="4" pattern="R[JO][A-Z]{2}">
-      <label for="getdate">日付</label>
-      <input type="date" id ="getdate" name="getdate">
+      {{ form }}
       <input type="submit" value="検索実行">
     </form>
     <h2>出力</h2>
@@ -31,6 +29,15 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" 
       integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" 
       crossorigin="anonymous">
+    </script>
+    <!-- flatpickr -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+      window.addEventListener("DOMContentLoaded", function() {
+        flatpickr(".flatpickr", {
+
+        });
+      });
     </script>
   </body>
 </html>

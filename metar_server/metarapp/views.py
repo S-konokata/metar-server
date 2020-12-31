@@ -1,17 +1,16 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from .forms import MetarAppForm
 
 
 def index(request):
-    return render(request, 'metarapp/index.html')
-
-
-def form(request):
-    getIcao = request.POST['icao']
-    getDate = request.POST['getdate']
     params = {
-        'icao': getIcao,
-        'getdate': getDate
+        'icao': '',
+        'getdate': '',
+        'form': MetarAppForm()
     }
+    if (request.method == 'POST'):
+        params['icao'] = request.POST['icao']
+        params['getdate'] = request.POST['search_date']
+        params['form'] = MetarAppForm(request.POST)
     return render(request, 'metarapp/index.html', params)
-    
