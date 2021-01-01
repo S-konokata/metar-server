@@ -19,8 +19,12 @@
     </p>
     <form action="{% url 'index' %}" method="post">
       {% csrf_token %}
-      {{ form }}
-      <input type="submit" value="検索実行">
+      <table>
+        {{ form.as_table }}
+        <tr><td></td></tr><td>
+          <input class="btn btn-primary" type="submit" value="検索実行">
+        </td>
+      </table>
     </form>
     <h2>出力</h2>
     <p>出力テスト</p>
