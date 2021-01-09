@@ -8,9 +8,9 @@ class MetarAppForm(forms.Form):
             attrs={'class': 'form-control'}
         )
     )
-    search_date = forms.DateField(
+    search_date = forms.DateTimeField(
         label='日付',
-        widget=forms.DateInput(
+        widget=forms.DateTimeInput(
             attrs={'class': 'form-control flatpickr'}
         )
     )

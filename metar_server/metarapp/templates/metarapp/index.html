@@ -29,6 +29,9 @@
     <h2>出力</h2>
     <p>出力テスト</p>
     <p>{{icao}}<br>{{getdate}}</p>
+    <p class="font-monospace">
+      {{outmetar}}
+    </p>
     <!-- Bootstrap: JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" 
       integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" 
@@ -39,7 +42,7 @@
     <script>
       window.addEventListener("DOMContentLoaded", function() {
         flatpickr(".flatpickr", {
-
+          enableTime: false
         });
       });
     </script>
