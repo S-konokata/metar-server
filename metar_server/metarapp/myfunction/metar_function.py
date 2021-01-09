@@ -10,11 +10,16 @@ from ..models import Metar
 class MetarInput():
     """Class for getting Metar model classes from AWS server.
 
+    If METAR data more/less 25 hours from fetched time is required,
+    'hour' attribute should be set.
+
     Attributes:
         airport_list (list[str]): List of airports to be fetched.
+        hour (int): hoursBeforeNow for fetching URL.
     """
-    def __init__(self, airport_list: list[str]) -> None:
+    def __init__(self, airport_list: list[str], hour: int = 25) -> None:
         self.airport_list = airport_list
+        self.hour = hour
 
     def get_models(self) -> list[Metar]:
         """Get METAR data and convert to list of Metar instance(s).
@@ -43,7 +48,7 @@ class MetarInput():
             'requestType': 'retrieve',
             'format': 'xml',
             'stationString': ','.join(self.airport_list),
-            'hoursBeforeNow': '25'
+            'hoursBeforeNow': str(self.hour)
         }
         res = requests.get(URL, params=payload)
         et = parse(res, forbid_dtd=True)
