@@ -11,12 +11,17 @@ class MetarInput():
     """Class for getting Metar model classes from AWS server.
 
     Attributes:
-        airport_list: 
+        airport_list (list[str]): List of airports to be fetched.
     """
     def __init__(self, airport_list: list[str]) -> None:
         self.airport_list = airport_list
 
     def get_models(self) -> list[Metar]:
+        """Get METAR data and convert to list of Metar instance(s).
+
+        Returns:
+            list[Metar]: List of Metar model instance(s) used for Django ORM.
+        """
         fetched_et = self.__fetch_metar()
         metar_elements = fetched_et.findall('./data/METAR')
         outlist: list[Metar] = []
@@ -25,6 +30,13 @@ class MetarInput():
         return outlist
 
     def __fetch_metar(self) -> ElementTree:
+        """Fetched XML data of METAR. Returns as ElementTree of the XML.
+
+        The METAR data is fetched from Aviation Weather Center.
+
+        Returns:
+            ElementTree: ElementTree of th fetched XML data.
+        """
         URL = r'https://www.aviationweather.gov/adds/dataserver_current/httpparam'
         payload = {
             'dataSource': 'metars',
@@ -38,6 +50,14 @@ class MetarInput():
         return et
 
     def __get_single_model(self, element: Element) -> Metar:
+        """Create Metar instance from Element of XML data.
+
+        Args:
+            element (Element): Element of 'METAR' section in the XML.
+
+        Returns:
+            Metar: Metar model of Django ORM.
+        """
         VIS_RE = r'KT ([0-9]{3}V[0-9]{3} )?(?P<vis>[0-9]{4})'
         raw_text = element.findtext('raw_text')
         station_id = element.findtext('station_id')
