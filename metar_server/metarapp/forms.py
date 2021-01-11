@@ -14,3 +14,11 @@ class MetarAppForm(forms.Form):
             attrs={'class': 'form-control flatpickr'}
         )
     )
+    metar_order = forms.ChoiceField(
+        label='radio',
+        choices={
+            'asc': '昇順',
+            'desc': '降順'
+        },
+        widget=forms.RadioSelect()
+    )
