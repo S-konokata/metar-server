@@ -1,5 +1,5 @@
 from __future__ import annotations
-import datetime
+import django.utils.dateparse
 from defusedxml.ElementTree import parse
 import re
 import requests
@@ -67,8 +67,7 @@ class MetarInput():
         raw_text = element.findtext('raw_text')
         station_id = element.findtext('station_id')
         datetime_rawtext = element.findtext('observation_time')
-        # Remove last "Z" from datetime string.
-        observation_time = datetime.datetime.fromisoformat(datetime_rawtext[:-1])
+        observation_time = django.utils.dateparse.parse_datetime(datetime_rawtext)
         temp_c = float(element.findtext('temp_c'))
         dewpoint_c = float(element.findtext('dewpoint_c'))
         wind_dir_degrees = int(element.findtext('wind_dir_degrees'))
