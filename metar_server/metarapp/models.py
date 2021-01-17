@@ -81,3 +81,13 @@ class Metar(models.Model):
                 name='unique_metar'
             )
         }
+
+
+class Airport(models.Model):
+    STATION_ID_RE = r'[A-Z]([A-Z]|[0-9]){2,3}'
+    station_id = models.CharField(
+        max_length=4,
+        validators=[RegexValidator(STATION_ID_RE)]
+    )
+    register_date = models.DateField()
+    is_fetched = models.BooleanField()
