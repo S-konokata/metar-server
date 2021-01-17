@@ -12,7 +12,6 @@ class Metar(models.Model):
         (METAR, 'METAR'),
         (SPECI, 'SPECI')
     ]
-    # "calc" comment column is needed to be converted from raw text. 
     raw_text = models.TextField(
         validators=[RegexValidator(RAW_TEXT_RE)]
     )
@@ -49,13 +48,13 @@ class Metar(models.Model):
     visibility_m = models.PositiveSmallIntegerField(
         default=9999,
         validators=[MaxValueValidator(9999)]
-    )  # calc
+    )
     altim_in_hg = models.FloatField(
         validators=[
             MaxValueValidator(32.5),
             MinValueValidator(25.1)
         ]
-    )  # calc
+    )
     wx_string = models.CharField(
         blank=True,
         max_length=16,
@@ -64,7 +63,7 @@ class Metar(models.Model):
     cloud_ceiling = models.PositiveIntegerField(
         blank=True,
         null=True
-    )  # calc(from other column)
+    )
     vert_vis_ft = models.PositiveSmallIntegerField(
         blank=True,
         null=True
@@ -74,3 +73,11 @@ class Metar(models.Model):
         default=METAR,
         max_length=5
     )
+
+    class Meta:
+        constraints = {
+            models.UniqueConstraint(
+                fields=['station_id', 'observation_time'],
+                name='unique_metar'
+            )
+        }
