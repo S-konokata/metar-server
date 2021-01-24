@@ -6,7 +6,7 @@ from defusedxml.ElementTree import parse
 import re
 import requests
 from xml.etree.ElementTree import Element, ElementTree
-from ..models import Airport, Metar
+from ..models import Metar
 
 
 class MetarInput():
@@ -154,18 +154,3 @@ class MetarInput():
                 observation_time__gte=recent_datetime
             )
         return store_recent
-
-
-def get_airport_list() -> list[str]:
-    """Get list of aiport ICAO ids from database
-
-    Returns:
-        list[str]: Stored ICAO ids for fetching METAR.
-    """
-    airport_list_query = Airport.objects \
-        .filter(
-            is_fetched=True
-        ) \
-        .values_list('station_id')
-    airport_list = list(airport_list_query)
-    return airport_list
