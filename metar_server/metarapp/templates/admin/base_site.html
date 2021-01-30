@@ -1,0 +1,7 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+  <a href="{% url 'metar_manage' %}">
+    Metar Manage
+  </a>
+  {{ block.super }}
+{% endblock %}

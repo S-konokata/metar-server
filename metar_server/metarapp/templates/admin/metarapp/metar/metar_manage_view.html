@@ -1,0 +1,40 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+  <h1>Managing METAR Page</h1>
+  <h2>Datetime of newest stored METAR</h2>
+  <p>The datetime of each airport is shown below.</p>
+  <table>
+    <tr>
+      <th>Airport</th>
+      <th>Newest datetime</th>
+    </tr>
+    {% for airport in newest_datetimes %}
+    <tr>
+      <td>{{airport["station_id"]}}</td>
+      <td>{{airport["newest_datetime"]}}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <h2>Get METAR</h2>
+  <form method="POST" name="get_metar_form">
+    {% csrf_token %}
+    <label>
+      Select the airport amd press the button 
+      to get METAR of the selected airport.<br>
+      Use shift key to select multiple.
+    </label>
+    <table>
+      {{form.as_table}}
+      <tr>
+        <td><input type="submit" value="Get METAR"></td>
+      </tr>
+    </table>
+  </form>
+  <p>
+    {% for text in get_metar_response %}
+      {{text}}<br>
+    {% endfor %}
+  </p>
+  {{ block.super }}
+{% endblock %}
