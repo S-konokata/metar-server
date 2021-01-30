@@ -1,5 +1,5 @@
 from __future__ import annotations
-import datetime
+from datetime import datetime
 from django.db.models.query import QuerySet
 from django.utils import dateparse, timezone
 from defusedxml.ElementTree import parse
