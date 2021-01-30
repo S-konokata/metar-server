@@ -10,7 +10,7 @@ from ..models import Metar
 
 
 class MetarInput():
-    """Class for getting Metar model classes from AWS server.
+    """Class for getting Metar model classes from AWC server.
 
     If METAR data more/less 25 hours from fetched time is required,
     'hour' attribute should be set.
