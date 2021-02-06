@@ -33,13 +33,13 @@ class MetarAdmin(admin.ModelAdmin):
             get_metar.fetch_and_save()
             metar_num_dict: dict[str: int] = {}
             for metar in get_metar.fetched_data:
-                if metar['station_id'] in metar:
-                    metar_num_dict[metar['station_id']] += 1
+                if metar.station_id in metar_num_dict:
+                    metar_num_dict[metar.station_id] += 1
                 else:
-                    metar_num_dict[metar['station_id']] = 1
+                    metar_num_dict[metar.station_id] = 1
             metar_all_num = 0
             for station in metar_num_dict:
-                metar_all_num += station
+                metar_all_num += metar_num_dict[station]
             fetched_time = get_metar.fetched_time.strftime(r"%Y %b %d %X %Z")
             params['get_metar_response'] = [
                 'The METARs are fetched.',

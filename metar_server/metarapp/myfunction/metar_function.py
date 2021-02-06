@@ -1,8 +1,8 @@
 from __future__ import annotations
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.db.models.query import QuerySet
 from django.utils import dateparse, timezone
-from defusedxml.ElementTree import parse
+from defusedxml.ElementTree import fromstring
 import re
 import requests
 from xml.etree.ElementTree import Element, ElementTree
@@ -68,7 +68,7 @@ class MetarInput():
         }
         res = requests.get(URL, params=payload)
         self.fetched_time = timezone.now()
-        et = parse(res, forbid_dtd=True)
+        et = fromstring(res.text, forbid_dtd=True)
         return et
 
     def __get_single_model(self, element: Element) -> Metar:
@@ -137,8 +137,8 @@ class MetarInput():
             bool: Returns True if metar is in store_recent.
         """
         for stored in store_recent.values():
-            if (stored['station_id'] == Metar.station_id and
-                    stored['observation_time'] == dateparse(Metar.observation_time)):
+            if (stored['station_id'] == metar.station_id and
+                    stored['observation_time'] == metar.observation_time):
                 return True
         return False
 
@@ -148,7 +148,7 @@ class MetarInput():
         Returns:
             QuerySet: Filtered QuerySet from database.
         """
-        recent_datetime = self.fetched_time - datetime.timedelta(hours=26)
+        recent_datetime = self.fetched_time - timedelta(hours=26)
         store_recent = Metar.objects \
             .filter(
                 observation_time__gte=recent_datetime
