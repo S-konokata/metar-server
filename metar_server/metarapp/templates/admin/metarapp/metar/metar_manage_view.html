@@ -36,5 +36,9 @@
       {{text}}<br>
     {% endfor %}
   </p>
+  {% load admin_urls %}
+  <a href="{% url 'admin:metarapp_metar_changelist' %}">
+    Back to Metar model page.
+  </a>
   {{ block.super }}
 {% endblock %}

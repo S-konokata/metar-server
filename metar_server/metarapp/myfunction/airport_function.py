@@ -56,6 +56,6 @@ def get_airport_list() -> list[str]:
         .filter(
             is_fetched=True
         ) \
-        .values_list('station_id')
+        .values_list('station_id', flat=True)
     airport_list = list(airport_list_query)
     return airport_list

@@ -32,14 +32,13 @@ class MetarAppForm(forms.Form):
 
 
 class GetMetarNowForm(forms.Form):
-    airport_choices = []
     airport = forms.MultipleChoiceField(
         label='Choose airport',
-        choices=airport_choices,
+        choices=[],
         widget=forms.SelectMultiple(attrs={'size': 5, 'id': 'airport_select'})
     )
 
-    def __init__(self, airport_list: list[str]) -> None:
+    def __init__(self, airport_list: list[str], *args, **kwargs) -> None:
         """Add airports to choices of this form.
 
         Other arguments are for super().__init__()
@@ -47,5 +46,5 @@ class GetMetarNowForm(forms.Form):
         Args:
             airport_list (list[str]): airport list from Airport model.
         """
-        self.airport_choices.extend(airport_list)
-        super().__init__()
+        super().__init__(*args, **kwargs)
+        self.fields['airport'].choices = [(id, id) for id in airport_list]
