@@ -8,10 +8,10 @@
       <th>Airport</th>
       <th>Newest datetime</th>
     </tr>
-    {% for airport in newest_datetimes %}
+    {% for key, value in newest_datetimes %}
     <tr>
-      <td>{{airport["station_id"]}}</td>
-      <td>{{airport["newest_datetime"]}}</td>
+      <td>{{key}}</td>
+      <td>{{value}}</td>
     </tr>
     {% endfor %}
   </table>

@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.urls import path, URLPattern
 from .forms import GetMetarNowForm
 from .models import Airport, Metar
-from metar_server.metarapp.myfunction import airport_function, metar_function
+from .myfunction import airport_function, metar_function
 
 
 @admin.register(Metar)
@@ -14,7 +14,7 @@ class MetarAdmin(admin.ModelAdmin):
         my_urls = [
             path(
                 'metar_manage_view',
-                self.admin_site.admin_view(self.metar_manage_view()),
+                self.admin_site.admin_view(self.metar_manage_view),
                 name='metar_manage'
             )
         ]

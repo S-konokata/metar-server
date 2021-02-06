@@ -75,12 +75,12 @@ class Metar(models.Model):
     )
 
     class Meta:
-        constraints = {
+        constraints = [
             models.UniqueConstraint(
                 fields=['station_id', 'observation_time'],
                 name='unique_metar'
             )
-        }
+        ]
 
 
 class Airport(models.Model):
