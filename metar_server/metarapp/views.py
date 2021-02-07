@@ -1,12 +1,15 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.http import HttpRequest
 from datetime import timedelta
 from .forms import MetarAppForm
 from .models import Metar
 
 
-def index(request):
+@login_required(login_url='/admin/login')
+def index(request: HttpRequest):
     params = {
+        'user_name': request.user.username,
         'icao': '',
         'getdate': '',
         'form': MetarAppForm(),
