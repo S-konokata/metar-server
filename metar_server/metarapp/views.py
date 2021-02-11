@@ -17,7 +17,9 @@ def index(request: HttpRequest):
     }
     if (request.method == 'POST'):
         form_post = MetarAppForm(request.POST)
-        form_post.is_valid()
+        if not form_post.is_valid():
+            params['form'] = form_post
+            return render(request, 'metarapp/index.html', params)
         # POST data is "YYYY-MM-DD" format (no time string).
         # Therefore, time of start_datetime is 0:00 (local timezone).
         start_datetime = form_post.cleaned_data['search_date']

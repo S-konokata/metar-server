@@ -1,7 +1,9 @@
 from __future__ import annotations
+import re
 from typing import Any, Mapping, Optional, Type, Union
 from django import forms
 from django.forms.utils import ErrorList
+from .models import Metar
 
 
 class MetarAppForm(forms.Form):
@@ -28,7 +30,14 @@ class MetarAppForm(forms.Form):
     )
 
     def clean(self) -> dict[str, any]:
-        return super().clean()
+        cleaned_data = super().clean()
+        cleaned_icao = cleaned_data.get('icao')
+        if not re.search(Metar.STATION_ID_RE, cleaned_icao):
+            raise forms.ValidationError('ICAO ID "RJ__"を入力してください')
+        cleaned_search_date = cleaned_data.get('search_date')
+        if not cleaned_search_date:
+            raise forms.ValidationError('日付を入力してください')
+        return cleaned_data
 
 
 class GetMetarNowForm(forms.Form):
