@@ -148,7 +148,7 @@ class MetarInput():
         Returns:
             QuerySet: Filtered QuerySet from database.
         """
-        recent_datetime = self.fetched_time - timedelta(hours=26)
+        recent_datetime = self.fetched_time - timedelta(hours=73)
         store_recent = Metar.objects \
             .filter(
                 observation_time__gte=recent_datetime
