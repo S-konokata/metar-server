@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from typing import Any, Optional
-from metar_server.metarapp.myfunction import airport_function, metar_function
+from ...myfunction import airport_function, metar_function
 
 
 class Command(BaseCommand):
@@ -17,4 +17,4 @@ class Command(BaseCommand):
         metar_input.fetch_and_save()
         self.stdout.write('Fetched airport is %s' % airport_list)
         self.stdout.write('Fetched time is %s' % metar_input.fetched_time)
-        return super().handle(*args, **options)
+        self.stdout.write('The number of the fetched data is %s' % len(metar_input.fetched_data))
