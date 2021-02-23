@@ -1,9 +1,16 @@
 from __future__ import annotations
 import re
-from typing import Any, Mapping, Optional, Type, Union
 from django import forms
-from django.forms.utils import ErrorList
+from django.contrib.auth.forms import AuthenticationForm
 from .models import Metar
+
+
+class MyLoginForm(AuthenticationForm):
+    def __init__(self, request, *args, **kwargs):
+        super().__init__(request, *args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['placeholder'] = field.label
 
 
 class MetarAppForm(forms.Form):

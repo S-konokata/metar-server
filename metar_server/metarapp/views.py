@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView, logout_then_login
 from django.http import HttpRequest
 from datetime import timedelta
-from .forms import MetarAppForm
+from .forms import MyLoginForm, MetarAppForm
 from .models import Metar
 
 
-@login_required(login_url='/admin/login')
+@login_required(login_url='/metarapp/login')
 def index(request: HttpRequest):
     params = {
         'user_name': request.user.username,
@@ -38,3 +39,12 @@ def index(request: HttpRequest):
         else:
             params['outmetar'] = metar_return
     return render(request, 'metarapp/index.html', params)
+
+
+def logout(request):
+    return logout_then_login(request=request, login_url='/metarapp/login')
+
+
+class Login(LoginView):
+    form_class = MyLoginForm
+    template_name = 'metarapp/login.html'
