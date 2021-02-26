@@ -3,7 +3,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator, RegexVa
 
 
 class Metar(models.Model):
-    RAW_TEXT_RE = r'\A([A-Z]([A-Z]|[0-9]){2,3} [1-3])'
+    RAW_TEXT_RE = r'\A([A-Z]([A-Z]|[0-9]){2,3} [0-3])'
     STATION_ID_RE = r'[A-Z]([A-Z]|[0-9]){2,3}'
     WX_STRING_RE = r'\A[-\+]?[A-Z]{2,10}'
     METAR = 'METAR'
