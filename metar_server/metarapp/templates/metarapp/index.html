@@ -10,13 +10,12 @@
 
 {% block content %}
 <h1>過去METAR検索</h1>
-<p>Hello, {{user_name}}</p>
 <h2>入力</h2>
 <p>
   表示したいMETARの空港コード＆日付を入れてください。<br>
   日本時間の一日分のMETARが表示されます。
 </p>
-<form action="{% url 'index' %}" method="post">
+<form action="{% url 'metarapp:index' %}" method="post">
   {% csrf_token %}
   <table>
     {{ form.as_table }}
