@@ -1,7 +1,9 @@
+import csv
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, logout_then_login
-from django.http import HttpRequest
+from django.http import HttpRequest, HttpResponse
+from django.db.models.query import QuerySet
 from datetime import timedelta
 from .forms import MyLoginForm, MetarAppForm
 from .models import Metar
@@ -38,6 +40,9 @@ def index(request: HttpRequest):
             params['outmetar'] = metar_return.reverse()
         else:
             params['outmetar'] = metar_return
+
+        if 'submit_csv' in request.POST:
+            return _create_csv_response(metar_return)
     return render(request, 'metarapp/index.html', params)
 
 
@@ -48,3 +53,14 @@ def logout(request):
 class Login(LoginView):
     form_class = MyLoginForm
     template_name = 'metarapp/login.html'
+
+
+def _create_csv_response(query: QuerySet) -> HttpResponse:
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="metar.csv"'
+    writer = csv.writer(response)
+    field_names = list(query.values()[0].keys())[1:]
+    writer.writerow(field_names)
+    for record in query.values_list():
+        writer.writerow(list(record)[1:])
+    return response
