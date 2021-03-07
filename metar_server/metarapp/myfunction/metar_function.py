@@ -79,8 +79,12 @@ class MetarInput():
 
         Returns:
             Metar: Metar model of Django ORM.
+
+        Raises:
+            re.error: if visibility_m is not found.
         """
         VIS_RE = r'KT ([0-9]{3}V[0-9]{3} )?(?P<vis>[0-9]{4})'
+        VIS_CAVOK_RE = r'KT ([0-9]{3}V[0-9]{3} )?CAVOK'
         raw_text = element.findtext('raw_text')
         station_id = element.findtext('station_id')
         datetime_rawtext = element.findtext('observation_time')
@@ -89,7 +93,6 @@ class MetarInput():
         dewpoint_c = float(element.findtext('dewpoint_c'))
         wind_dir_degrees = int(element.findtext('wind_dir_degrees'))
         wind_speed_kt = int(element.findtext('wind_speed_kt'))
-        visibility_m = int(re.search(VIS_RE, raw_text).group('vis'))
         altim_in_hg = float(element.findtext('altim_in_hg'))
         metar_type = element.findtext('metar_type')
 
@@ -101,10 +104,19 @@ class MetarInput():
             dewpoint_c=dewpoint_c,
             wind_dir_degrees=wind_dir_degrees,
             wind_speed_kt=wind_speed_kt,
-            visibility_m=visibility_m,
             altim_in_hg=altim_in_hg,
             metar_type=metar_type
         )
+
+        try:
+            vis_match = re.search(VIS_RE, raw_text).group('vis')
+            visibility_m = int(vis_match)
+        except AttributeError:
+            if re.search(VIS_CAVOK_RE, raw_text) is not None:
+                visibility_m = 9999
+            else:
+                raise re.error('visibility is not found in raw text: %s' % raw_text)
+        metar.visibility_m = visibility_m
 
         if element.findtext('wind_gust_kt') is not None:
             wind_gust_kt = int(element.findtext('wind_gust_kt'))
