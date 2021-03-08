@@ -130,6 +130,10 @@ STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = 'metarapp:index'
 
+SESSION_COOKIE_AGE = 1800
+
+SESSION_SAVE_EVERY_REQUEST = True
+
 try:
     from .local_settings import *
 except ImportError:
