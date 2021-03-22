@@ -74,7 +74,6 @@ class MetarInput():
         return et
 
     def __remove_auto(self, raw_text: str) -> bool:
-        print(raw_text)
         AUTO_RE = r'Z AUTO'
         EMPTY_RE = r'/{2,}'
         if re.search(AUTO_RE, raw_text) is not None and re.search(EMPTY_RE, raw_text) is not None:
