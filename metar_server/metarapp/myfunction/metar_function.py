@@ -43,6 +43,8 @@ class MetarInput():
         metar_elements = fetched_et.findall('./data/METAR')
         store_recent = self.__get_recent()
         for element in metar_elements:
+            if self.__remove_auto(element.findtext('raw_text')) is True:
+                continue
             metar_model = self.__get_single_model(element)
             if self.__is_duplicate(metar_model, store_recent) is True:
                 continue
@@ -70,6 +72,15 @@ class MetarInput():
         self.fetched_time = timezone.now()
         et = fromstring(res.text, forbid_dtd=True)
         return et
+
+    def __remove_auto(self, raw_text: str) -> bool:
+        print(raw_text)
+        AUTO_RE = r'Z AUTO'
+        EMPTY_RE = r'/{2,}'
+        if re.search(AUTO_RE, raw_text) is not None and re.search(EMPTY_RE, raw_text) is not None:
+            return True
+        else:
+            return False
 
     def __get_single_model(self, element: Element) -> Metar:
         """Create Metar instance from Element of XML data.
